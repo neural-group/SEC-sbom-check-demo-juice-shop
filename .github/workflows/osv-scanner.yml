@@ -1,0 +1,24 @@
+# Google 公式の OSV-Scanner で、リポジトリ内のロックファイルをまとめてスキャンする。
+# 結果は Security タブ（Code scanning）に表示される。
+name: OSV-Scanner
+
+on:
+  push:
+    branches: [develop]
+  schedule:
+    - cron: "37 0 * * 1"   # 毎週月曜 9:37 JST（cron は UTC 指定）
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  security-events: write   # 結果を Security タブに表示するために必要
+  contents: read
+
+jobs:
+  scan:
+    # タグではなくコミットSHAで固定
+    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@a345acffa64b0eaede81a3d9aae6141214d9c8fc # v2.6.0
+    with:
+      scan-args: |-
+        --recursive
+        ./
