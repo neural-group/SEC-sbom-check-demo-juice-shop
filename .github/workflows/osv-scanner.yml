@@ -22,3 +22,6 @@ jobs:
       scan-args: |-
         --recursive
         ./
+      # 脆弱性を見つけてもジョブは失敗させない。
+      # 「検出したら止める」役は sbom-check.yml が担い、こちらは Security タブへの一覧表示に専念する
+      fail-on-vuln: false
